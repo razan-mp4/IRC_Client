@@ -1,0 +1,16 @@
+@startuml
+!theme crt-green
+actor User
+participant IRC_Client
+participant IRC_Server
+
+User -> IRC_Client: (1) Type "/list"
+IRC_Client -> IRC_Server: (2) Request a list of channels
+IRC_Server --> IRC_Client: (3) Send list of channels (e.g. /list response)
+IRC_Client -> IRC_Client: (4) Updates UI with channels list
+User -> IRC_Client: (5) Type "/join #channel"
+IRC_Client -> IRC_Server: (6) Send JOIN message to IRC Server
+IRC_Server --> IRC_Client: (7) Acknowledgment (e.g., JOIN response)
+IRC_Client -> IRC_Client: (8) Updates UI with channel information
+
+@enduml

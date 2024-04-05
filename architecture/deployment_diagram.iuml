@@ -1,0 +1,15 @@
+@startuml
+!theme crt-green
+
+node Server {
+  component IRC_Network {
+}
+}
+node User's_computer {
+  component IRC_Client {
+    artifact Software 
+    artifact User_Interface 
+}
+}
+IRC_Client <-l-> IRC_Network : IRC Protocol
+@enduml

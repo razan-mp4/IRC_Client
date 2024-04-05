@@ -1,0 +1,61 @@
+
+@startuml
+!theme crt-green
+package "Client" {
+  class IRCClient {
+    -bridge: IRCBridge
+    +connectToServer(server: String, port: String, channel: String, nickname: String): Tuple
+    +disconnectFromServer()
+    +reconnectToServer()
+    +sendMessage(message: String): String
+    +receiveData(): String
+  }
+
+  class IRCBridge {
+    {abstract} +connect()
+    {abstract} +disconnect()
+    {abstract} +reconnect()
+    {abstract} +sendData(message: String)
+    {abstract} +receiveData(): String
+  }
+
+  class SocketBridge {
+    -ircSocket: Socket
+    +connect()
+    +disconnect()
+    +reconnect()
+    +sendData(message: String)
+    +receiveData(): String
+  }
+
+  class WebSocketBridge {
+    -ircWebSocket: WebSocket
+    +connect()
+    +disconnect()
+    +reconnect()
+    +sendData(message: String)
+    +receiveData(): String
+  }
+}
+class SocketServer {
+  +handleConnection(socket: Socket)
+  +handleDisconnection(socket: Socket)
+  +handleData(socket: Socket, data: String)
+}
+
+class WebSocketServer {
+  +handleConnection(webSocket: WebSocket)
+  +handleDisconnection(webSocket: WebSocket)
+  +handleData(webSocket: WebSocket, data: String)
+}
+
+IRCClient *-- IRCBridge
+IRCBridge <|.. SocketBridge
+IRCBridge <|.. WebSocketBridge
+
+SocketBridge <--> SocketServer :command/response 
+SocketBridge <--> SocketServer :connect/disconnect
+WebSocketBridge <--> WebSocketServer :command/response 
+WebSocketBridge <--> WebSocketServer :connect/disconnect
+
+@enduml

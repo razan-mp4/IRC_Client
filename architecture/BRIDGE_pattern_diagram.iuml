@@ -1,0 +1,41 @@
+@startuml
+!theme crt-green
+class IRCBridge {
+  + connect(): bool
+  + disconnect(): void
+  + reconnect(): void
+  + send_data(message: str): void
+  + receive_data(): str
+}
+
+class SocketBridge {
+  - irc_socket: socket.socket
+  + connect(): bool
+  + disconnect(): void
+  + reconnect(): void
+  + send_data(message: str): void
+  + receive_data(): str
+  + start(): void
+}
+
+class WebSocketBridge {
+  + connect(): bool
+  + disconnect(): void
+  + reconnect(): void
+  + send_data(message: str): void
+  + receive_data(): str
+}
+
+class IRCClient {
+  - bridge: IRCBridge
+  + connect_to_server(server: str, port: int, channel: str, nickname: str): tuple
+
+}
+
+IRCClient *-- IRCBridge
+SocketBridge --|> IRCBridge
+WebSocketBridge --|> IRCBridge
+
+IRCClient --> SocketBridge
+
+@enduml

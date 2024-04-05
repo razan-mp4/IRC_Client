@@ -1,0 +1,47 @@
+@startuml
+!theme crt-green
+abstract class ConfigValidation {
+  + validate_config(server: str, port: str, channel: str, nickname: str): tuple
+}
+
+class BasicConfigValidation {
+  + is_valid_ip(ip: str): bool
+  + is_valid_domain(domain: str): bool
+  + validate_config(server: str, port: str, channel: str, nickname: str): tuple
+}
+
+class AdvancedConfigValidation {
+  + validate_config(server: str, port: str, channel: str, nickname: str): tuple
+}
+
+class IRCClient {
+  - server_config_validator: ConfigValidation
+  - validated_config: tuple
+  - server_connection: ServerHandler
+
+  + set_server_config_validator(validator: ConfigValidation): void
+  + connect_to_server(server: str, port: str, channel: str, nickname: str): tuple
+  + disconnect_from_server(): void
+  + reconnect_to_server(): void
+  + send_message(message: str): str
+  + receive_data(): str
+}
+
+class ServerHandler {
+  // Class definition for ServerHandler
+}
+
+class GUI {
+  // Class definition for GUI
+}
+
+IRCClient -r-> GUI
+IRCClient --> BasicConfigValidation
+IRCClient --> AdvancedConfigValidation
+
+IRCClient *-l- ServerHandler : composition
+
+ConfigValidation <|-u- BasicConfigValidation
+ConfigValidation <|-u- AdvancedConfigValidation
+
+@enduml

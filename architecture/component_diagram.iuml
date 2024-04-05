@@ -1,0 +1,22 @@
+@startuml
+!theme crt-green
+package IRC_Client {
+  [IRC Client] as Client
+  [User Interface] as UI
+  [Message Handler] as Handler
+  [Server Connector] as Connector
+  [Input Validating] as Validator
+  [Server Configuration] as Config
+}
+
+component IRC_Server as Server
+
+Client <--> UI : User Interaction
+Client <--> Validator : Validating Input
+Client <--> Config : Chosing Destination
+Client <--> Connector : Server Connection
+Connector <--> Server : IRC Protocol (Communication/Connection)
+
+
+Handler <--> Connector : Message Handling
+@enduml

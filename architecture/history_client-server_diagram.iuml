@@ -1,0 +1,33 @@
+@startuml
+
+!theme crt-green
+
+
+package "Client" {
+  class IRCClient {
+    -history_manager: HistoryServerHandler
+    +post_chat_history(history_data: String)
+    +get_chat_history(): String
+  }
+
+  class HistoryServerHandler {
+    +connect_to_server()
+    +post_history(history_data: String)
+    +get_history_from_server(): String
+    +start_history_thread()
+    +close_connection()
+  }
+
+}
+
+class SocketServer {
+  +start()
+  +handle_client()
+}
+
+IRCClient *-- HistoryServerHandler
+
+HistoryServerHandler <--> SocketServer :connect/disconnect (TCP)
+HistoryServerHandler <--> SocketServer :data (TCP)
+
+@enduml

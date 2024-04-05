@@ -1,0 +1,52 @@
+@startuml
+!theme crt-green
+class IRC_Client {
+  - server: IRC_Server
+  - user: User
+  - messageHandler: MessageHandler
+  - channels: Channel[]
+  + listChannels(): Channel[]
+  + requestAssistance(): void
+}
+
+class User {
+  - nickname: String
+  - password: String
+  - registered: boolean
+  + setNickname(newNickname: String): void
+  + setPassword(newPassword: String): void
+  + register(): void
+}
+
+class IRC_Server {
+  - address: String
+  - port: int
+  + connectToServer(serverAddress: String, port: int): void
+  + disconnectFromServer(): void
+}
+
+class Channel {
+  - name: String
+  + getMetadata(channelName: String): ChannelMetadata
+  + joinChannel(channelName: String): void
+}
+
+class ChannelMetadata {
+  - topic: String
+  - description: String
+}
+
+class MessageHandler {
+  - client: IRC_Client  
+  + handleIncomingMessage(message: String): void 
+  + handleUserJoinedChannel(user: User, channel: Channel): void 
+  + handleUserLeftChannel(user: User, channel: Channel): void 
+  + writeMessage(channel: Channel, message: String): void
+}
+IRC_Client *-u- User
+IRC_Client *-r- IRC_Server
+IRC_Client -l-> Channel 
+ChannelMetadata --o Channel 
+IRC_Client o-- MessageHandler
+
+@enduml

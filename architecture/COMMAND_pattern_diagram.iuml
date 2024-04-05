@@ -1,0 +1,69 @@
+@startuml
+!theme crt-green
+class Command {
+  +execute(): void
+}
+
+class JoinChannelCommand {
+  -irc_client: IRCClient
+  -new_channel: String
+  +execute(): String
+}
+
+class LeaveChannelCommand {
+  -irc_client: IRCClient
+  +execute(): String
+}
+
+class ListUsersCommand {
+  -irc_client: IRCClient
+  +execute(): String
+}
+
+class ChannelInfoCommand {
+  -irc_client: IRCClient
+  +execute(): String
+}
+
+class ChangeNicknameCommand {
+  -irc_client: IRCClient
+  -new_nickname: String
+  +execute(): String
+}
+
+class DisplayHelpCommand {
+  -irc_client: IRCClient
+  +execute(): String
+}
+
+class QuitCommand {
+  -irc_client: IRCClient
+  +execute(): String
+}
+
+class MessageHandler {
+  -irc_client: IRCClient
+  -commands: Map<String, Command>
+  +command_choice(message: String): String
+}
+
+
+
+class IRCClient {
+  -command_handler: MessageHandler
+  +send_message(message: String): String
+  +message_handler(message: String): void
+}
+
+Command <|-- JoinChannelCommand
+Command <|-- LeaveChannelCommand
+Command <|-- ListUsersCommand
+Command <|-- ChannelInfoCommand
+Command <|-- ChangeNicknameCommand
+Command <|-- DisplayHelpCommand
+Command <|-- QuitCommand
+
+IRCClient *-- MessageHandler
+MessageHandler *-- Command
+
+@enduml

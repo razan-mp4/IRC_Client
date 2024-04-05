@@ -1,0 +1,52 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+!theme crt-green
+actor IRC_server
+rectangle IRC_Client {
+  user --> (connect to IRC Server)
+  (connect to IRC Server) --> IRC_server
+  
+  user --> (join Channel)
+  (join Channel) --> IRC_server
+
+  note "Condition: if channel does not exist\nPoint of extension: new channel" as N1
+  (join Channel) .. N1
+  N1 .. (create Channel)
+  (join Channel) <.. (create Channel) : <<extends>>
+  (create Channel) --> IRC_server
+
+  user --> (send Message)
+  (send Message) --> IRC_server
+
+  user <-- (receive Message)
+  (receive Message) <-- IRC_server
+
+  user <-- (list Users)
+  (list Users) <-- IRC_server
+
+  user --> (disconnect from IRC Server)
+  (disconnect from IRC Server) --> IRC_server
+
+  user --> (register)
+  (register) ..> (set Nickname) : <<include>>
+  (register) --> IRC_server
+
+  user --> (set Nickname)
+  (set Nickname) --> IRC_server
+
+  user --> (assist)
+
+
+  user --> (receive Metadata about the Channel)
+  (receive Metadata about the Channel) --> IRC_server
+}
+
+note left of IRC_server : The server hosting the IRC network,\nwhich is an external entity.
+note right of user : The primary actor who\ninteracts with the IRC client.
+note left of (set Nickname) : Allows the user to set or change\ntheir nickname on the IRC network.
+note left of (register) : Provides the option for users to register their\naccount on the IRC network for additional features.
+note left of (assist) : Access help or assistance\nresources to support the user.
+note left of (receive Metadata about the Channel) : Fetches and displays metadata information about a\nspecific IRC channel, such as the topic or description.
+
+@enduml
